@@ -1,7 +1,7 @@
 yii2-gravatar-widget
 ====================
 
-Yii2 wrapper for [Gravatar service](https://gravatar.com)
+Yii2 wrapper for [Gravatar](https://gravatar.com) service.
 
 ## Installation
 
