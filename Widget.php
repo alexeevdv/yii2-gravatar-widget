@@ -30,37 +30,52 @@ class Widget extends \yii\base\Widget {
      * @var integer
      */
     public $size;
+    
+    /**
+     * Default image
+     * Must be valid URI or one of this values: 404, mm, identicon, monsterid, wavatar, retro, blank
+     * @var string
+     */
+    public $defaultImage;
+    
+    /**
+     * Force default image to be displayed?
+     * @var bool
+     */
+    public $forceDefault = false;
+    
+    /**
+     * Avatar rating level
+     * Allowed values: g, pg, r, x
+     * @var string
+     */
+    public $rating;
+    
 
     const URL_HTTP = "http://www.gravatar.com/avatar/";
     const URL_HTTPS = "https://secure.gravatar.com/avatar/";
 
     public function run() {
         
-        // Email is required
-        if (empty($this->email)) {
-            throw new \yii\base\InvalidConfigException("`email` param is required");
-        } else {
-            // Email validation
-            $validator = new \yii\validators\EmailValidator;
-            if (!$validator->validate($this->email, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
-            }            
-        }    
+        $this->_validateParams();
         
         $params = [];
-        
+
         if (!empty($this->size)) {
-            // Size validation
-            $validator = new \yii\validators\NumberValidator([
-                "min" => 1,
-                "max" => 2048,
-            ]);
-            if (!$validator->validate($this->size, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
-            }
-            
-            $params['s'] = $this->size;
-        }        
+            $params["s"] = $this->size;
+        }
+        
+        if ($this->forceDefault) {
+            $params["f"] = "y";
+        }
+        
+        if (!empty($this->defaultImage)) {
+            $params["d"] = urlencode($this->defaultImage);
+        }
+        
+        if (!empty($this->rating)) {
+            $params["r"] = $this->rating;
+        }
         
         $hash = md5(strtolower(trim($this->email)));
       
@@ -73,5 +88,50 @@ class Widget extends \yii\base\Widget {
         
         return Html::img($url);
         
+    }
+    
+    private function _validateParams()
+    {
+        // Email
+        if (empty($this->email)) {
+            throw new \yii\base\InvalidConfigException("`email` param is required");
+        } else {
+            $validator = new \yii\validators\EmailValidator;
+            if (!$validator->validate($this->email, $error)) {
+                throw new \yii\base\InvalidConfigException($error);
+            }            
+        }    
+        
+        // Size
+        if (!empty($this->size)) {
+            $validator = new \yii\validators\NumberValidator([
+                "min" => 1,
+                "max" => 2048,
+            ]);
+            if (!$validator->validate($this->size, $error)) {
+                throw new \yii\base\InvalidConfigException($error);
+            }            
+        }        
+        
+        // Rating
+        if (!empty($this->rating)) {
+            $validator = new \yii\validators\RangeValidator([
+                "range" => ["g", "pg", "r", "x"],
+            ]);        
+            if (!$validator->validate($this->size, $error)) {
+                throw new \yii\base\InvalidConfigException($error);
+            }
+        }
+        
+        // Default image
+        if (!empty($this->defaultImage)) {
+            $validator = new \yii\validators\RangeValidator([
+                "range" => ["404", "mm", "identicon", "monsterid", "wavatar", "retro", "blank"],
+            ]);
+            
+            if (!$validator->validate($this->size, $error)) {
+                throw new \yii\base\InvalidConfigException($error);
+            }        
+        }
     }
 }
