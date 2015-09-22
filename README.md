@@ -29,7 +29,7 @@ echo \alexeevdv\gravatar\Widget([
 ]);
 ```
 
-### Params
+## Params
 
 ```php
 /**
