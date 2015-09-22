@@ -70,7 +70,8 @@ class Widget extends \yii\base\Widget {
         }
         
         if (!empty($this->defaultImage)) {
-            $params["d"] = urlencode($this->defaultImage);
+            // urlencode will be made by yii Html helper
+            $params["d"] = $this->defaultImage;
         }
         
         if (!empty($this->rating)) {
