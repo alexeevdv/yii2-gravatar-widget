@@ -51,6 +51,11 @@ class Widget extends \yii\base\Widget {
      */
     public $rating;
     
+    /**
+     * Additional options to Html::img method
+     * @var array
+     */
+    public $options = [];
 
     const URL_HTTP = "http://www.gravatar.com/avatar/";
     const URL_HTTPS = "https://secure.gravatar.com/avatar/";
@@ -87,7 +92,7 @@ class Widget extends \yii\base\Widget {
             $url .= "?".http_build_query($params);
         }
         
-        return Html::img($url);        
+        return Html::img($url, $options);        
     }
     
     private function _validateParams()
