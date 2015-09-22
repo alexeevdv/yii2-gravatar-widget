@@ -1,0 +1,27 @@
+{
+    "name": "alexeevdv/yii2-gravatar-widget",
+    "description": "Gravatar widget for Yii2",
+    "keywords": ["yii2", "gravatar", "avatar", "widget"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "support": {
+        "source": "https://github.com/alexeevdv/yii2-gravatar-widget",
+        "issues": "https://github.com/alexeevdv/yii2-gravatar-widget/issues"
+    },
+    "authors": [
+        {
+            "name": "alexeevdv",
+            "homepage": "https://alexeevdv.ru/",
+            "email": "mail@alexeevdv.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "alexeevdv\\gravatar\\": ""
+        }
+    }
+}
