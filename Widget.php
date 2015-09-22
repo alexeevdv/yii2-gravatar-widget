@@ -92,7 +92,7 @@ class Widget extends \yii\base\Widget {
             $url .= "?".http_build_query($params);
         }
         
-        return Html::img($url, $options);        
+        return Html::img($url, $this->options);        
     }
     
     private function _validateParams()
