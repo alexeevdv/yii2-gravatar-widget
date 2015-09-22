@@ -86,8 +86,7 @@ class Widget extends \yii\base\Widget {
             $url .= "?".http_build_query($params);
         }
         
-        return Html::img($url);
-        
+        return Html::img($url);        
     }
     
     private function _validateParams()
@@ -118,19 +117,21 @@ class Widget extends \yii\base\Widget {
             $validator = new \yii\validators\RangeValidator([
                 "range" => ["g", "pg", "r", "x"],
             ]);        
-            if (!$validator->validate($this->size, $error)) {
+            if (!$validator->validate($this->rating, $error)) {
                 throw new \yii\base\InvalidConfigException($error);
             }
         }
         
         // Default image
-        if (!empty($this->defaultImage)) {
-            $validator = new \yii\validators\RangeValidator([
-                "range" => ["404", "mm", "identicon", "monsterid", "wavatar", "retro", "blank"],
-            ]);
-            
-            if (!$validator->validate($this->size, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
+        if (!empty($this->defaultImage)) {         
+            $validator = new \yii\validators\UrlValidator;
+            if (!$validator->validate($this->defaultImage, $error)) {
+                $validator = new \yii\validators\RangeValidator([
+                    "range" => ["404", "mm", "identicon", "monsterid", "wavatar", "retro", "blank"],
+                ]);            
+                if (!$validator->validate($this->defaultImage, $error)) {
+                    throw new \yii\base\InvalidConfigException($error);
+                }
             }        
         }
     }
