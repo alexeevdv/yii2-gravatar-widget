@@ -72,7 +72,7 @@ string $rating;
 /**
  * Additional HTML attributes to img tag
  */
-array $options;
+array $options = [];
 
 ```
 
