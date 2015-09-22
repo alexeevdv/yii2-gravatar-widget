@@ -51,8 +51,10 @@ class Widget extends \yii\base\Widget {
         
         if (!empty($this->size)) {
             // Size validation
-            $validator = new \yii\validators\RangeValidator;
-            $validator->range = [1, 2048];
+            $validator = new \yii\validators\NumberValidator([
+                "min" => 1,
+                "max" => 2048,
+            ]);
             if (!$validator->validate($this->size, $error)) {
                 throw new \yii\base\InvalidConfigException($error);
             }
