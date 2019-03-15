@@ -1,6 +1,14 @@
 yii2-gravatar-widget
 ====================
 
+[![Build Status](https://travis-ci.com/alexeevdv/yii2-gravatar-widget.svg?branch=master)](https://travis-ci.com/alexeevdv/yii2-gravatar-widget) 
+[![codecov](https://codecov.io/gh/alexeevdv/yii2-gravatar-widget/branch/master/graph/badge.svg)](https://codecov.io/gh/alexeevdv/yii2-gravatar-widget)
+![PHP 5.6](https://img.shields.io/badge/PHP-5.6-green.svg) 
+![PHP 7.0](https://img.shields.io/badge/PHP-7.0-green.svg) 
+![PHP 7.1](https://img.shields.io/badge/PHP-7.1-green.svg) 
+![PHP 7.2](https://img.shields.io/badge/PHP-7.2-green.svg)
+![PHP 7.2](https://img.shields.io/badge/PHP-7.3-green.svg)
+
 Yii2 wrapper for [Gravatar](https://gravatar.com) service.
 
 ## Installation

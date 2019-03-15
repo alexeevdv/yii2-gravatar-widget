@@ -81,7 +81,7 @@ class Widget extends \yii\base\Widget
             'defaultImage' => $this->defaultImage,
         ]);
         if (!$this->_model->validate()) {
-            throw new InvalidConfigException($this->_model->getFirstErrors()[0]);
+            throw new InvalidConfigException(reset($this->_model->getFirstErrors()));
         }
     }
 
@@ -104,6 +104,6 @@ class Widget extends \yii\base\Widget
             $url .= '?' . http_build_query($params);
         }
 
-        return Html::img($url, $this->options);
+        return strtr(Html::img('{url}', $this->options), ['{url}' => $url]);
     }
 }
