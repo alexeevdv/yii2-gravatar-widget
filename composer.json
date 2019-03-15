@@ -15,13 +15,25 @@
             "email": "mail@alexeevdv.ru"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {
-        "yiisoft/yii2": "*"
+    "config": {
+        "sort-packages": true
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "autoload": {
         "psr-4": {
-            "alexeevdv\\gravatar\\": ""
+            "alexeevdv\\yii\\gravatar\\": "src"
         }
+    },
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.5",
+        "yiisoft/yii2-coding-standards": "^2.0"
     }
 }

@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-$ php composer.phar require alexeevdv/yii2-gravatar-widget "dev-master"
+$ php composer.phar require alexeevdv/yii2-gravatar-widget
 ```
 
 or add
 
 ```
-"alexeevdv/yii2-gravatar-widget": "dev-master"
+"alexeevdv/yii2-gravatar-widget": "^1.0"
 ```
 
 to the ```require``` section of your `composer.json` file.
@@ -24,7 +24,7 @@ to the ```require``` section of your `composer.json` file.
 ## Usage
 
 ```php
-echo \alexeevdv\gravatar\Widget([
+echo \alexeevdv\yii\gravatar\Widget([
     "email" => "mail@example.com", // required
 ]);
 ```
