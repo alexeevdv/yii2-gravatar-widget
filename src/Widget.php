@@ -2,16 +2,15 @@
 
 namespace alexeevdv\yii\gravatar;
 
-use \yii\helpers\Html;
+use yii\base\InvalidConfigException;
+use yii\helpers\Html;
 
-class Widget extends \yii\base\Widget {
-
-    /**
-     * Use HTTPS?
-     * @var bool
-     */
-    public $secure = true;
-
+/**
+ * Class Widget
+ * @package alexeevdv\yii\gravatar
+ */
+class Widget extends \yii\base\Widget
+{
     /**
      * Append .jpg extension?
      * @var bool
@@ -26,7 +25,7 @@ class Widget extends \yii\base\Widget {
 
     /**
      * Image size in pixels
-     * Must be beetween 1 and 2048
+     * Must be between 1 and 2048
      * @var integer
      */
     public $size;
@@ -57,88 +56,54 @@ class Widget extends \yii\base\Widget {
      */
     public $options = [];
 
-    const URL_HTTP = "http://www.gravatar.com/avatar/";
-    const URL_HTTPS = "https://secure.gravatar.com/avatar/";
+    /**
+     * Base URL for avatars
+     * @var string
+     */
+    public $baseUrl =  'https://secure.gravatar.com/avatar/';
 
-    public function run() {
+    /**
+     * @var Model
+     */
+    private $_model;
 
-        $this->_validateParams();
-
-        $params = [];
-
-        if (!empty($this->size)) {
-            $params["s"] = $this->size;
+    /**
+     * @inheritdoc
+     * @throws InvalidConfigException
+     */
+    public function init()
+    {
+        parent::init();
+        $this->_model = new Model([
+            'email' => $this->email,
+            'size' => $this->size,
+            'rating' => $this->rating,
+            'defaultImage' => $this->defaultImage,
+        ]);
+        if (!$this->_model->validate()) {
+            throw new InvalidConfigException($this->_model->getFirstErrors()[0]);
         }
+    }
 
-        if ($this->forceDefault) {
-            $params["f"] = "y";
-        }
+    /**
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public function run()
+    {
+        $params = array_filter([
+            's' => $this->_model->size,
+            'f' => $this->forceDefault ? 'y' : null,
+            'd' => $this->_model->defaultImage,
+            'r' => $this->_model->rating,
+        ], 'strlen');
 
-        if (!empty($this->defaultImage)) {
-            // urlencode will be made by yii Html helper
-            $params["d"] = $this->defaultImage;
-        }
+        $url = $this->baseUrl . md5($this->_model->email) . ($this->extension ? '.jpg' : '');
 
-        if (!empty($this->rating)) {
-            $params["r"] = $this->rating;
-        }
-
-        $hash = md5(strtolower(trim($this->email)));
-
-        $url = ($this->secure ? self::URL_HTTPS : self::URL_HTTP).$hash.($this->extension ? ".jpg" : "");
-
-        if (count($params))
-        {
-            $url .= "?".http_build_query($params);
+        if (count($params)) {
+            $url .= '?' . http_build_query($params);
         }
 
         return Html::img($url, $this->options);
-    }
-
-    private function _validateParams()
-    {
-        // Email
-        if (empty($this->email)) {
-            throw new \yii\base\InvalidConfigException("`email` param is required");
-        } else {
-            $validator = new \yii\validators\EmailValidator;
-            if (!$validator->validate($this->email, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
-            }
-        }
-
-        // Size
-        if (!empty($this->size)) {
-            $validator = new \yii\validators\NumberValidator([
-                "min" => 1,
-                "max" => 2048,
-            ]);
-            if (!$validator->validate($this->size, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
-            }
-        }
-
-        // Rating
-        if (!empty($this->rating)) {
-            $validator = new \yii\validators\RangeValidator([
-                "range" => ["g", "pg", "r", "x"],
-            ]);
-            if (!$validator->validate($this->rating, $error)) {
-                throw new \yii\base\InvalidConfigException($error);
-            }
-        }
-
-        // Default image
-        if (!empty($this->defaultImage)) {
-            $validator = new \yii\validators\UrlValidator;
-            if (!$validator->validate($this->defaultImage, $error)) {
-                $validator = new \yii\validators\RangeValidator([
-                    "range" => ["404", "mm", "identicon", "monsterid", "wavatar", "retro", "blank"],
-                ]);
-                if (!$validator->validate($this->defaultImage, $error)) {
-                    throw new \yii\base\InvalidConfigException($error);
-                }
-            }
-        }
     }
 }
