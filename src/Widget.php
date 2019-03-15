@@ -81,7 +81,8 @@ class Widget extends \yii\base\Widget
             'defaultImage' => $this->defaultImage,
         ]);
         if (!$this->_model->validate()) {
-            throw new InvalidConfigException(reset($this->_model->getFirstErrors()));
+            $validationErrors = $this->_model->getFirstErrors();
+            throw new InvalidConfigException(reset($validationErrors));
         }
     }
 
